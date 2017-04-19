@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              xmlns:custom="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.ec.vone.MainActivity"
+              android:weightSum="1">
+
+    <com.ec.vone.view.MyView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        custom:titleText="2333"
+        custom:titleTextColor="#f5efef"
+        custom:titleTextSize="50sp"
+        android:layout_centerInParent="true"
+
+        />
+
+</RelativeLayout>
