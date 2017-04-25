@@ -8,14 +8,56 @@
               tools:context="com.ec.vone.MainActivity"
               android:weightSum="1">
 
-    <com.ec.vone.view.MyView
+    <com.ec.vone.view.MyLoadingView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        custom:circleWidth="10dp"
+        custom:firstColor="@color/colorAccent"
+        custom:secondColor="@color/colorPrimary"
+        custom:thirdColor="@color/colorPrimaryDark"
+        custom:speed="2"
+        />
+
+    <com.ec.vone.view.MyVoiceControlView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:visibility="visible"
+        custom:background="@drawable/dududu"
+        custom:circleWidth="10dp"
+        custom:dotCount="10"
+        custom:firstColor="@color/color_bg_1"
+        custom:secondColor="@color/current"
+        custom:splitSize="20"/>
+    <com.ec.vone.view.MyTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         custom:titleText="2333"
-        custom:titleTextColor="#f5efef"
+        custom:titleTextColor="#eeeeee"
         custom:titleTextSize="50sp"
         android:layout_centerInParent="true"
-
+        android:id="@+id/myTextView"
         />
+
+        <!--custom:image="@drawable/ic_bluetooth_audio_black_24dp"-->
+    <com.ec.vone.view.MyImageView
+        android:layout_width="385dp"
+        android:layout_height="100dp"
+        custom:image="@mipmap/ic_launcher"
+        custom:scaleType="center"
+        custom:titleText="中国智造 Made in China"
+        custom:titleTextColor="#231313"
+        custom:titleTextSize="35sp"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/myTextView"
+        android:id="@+id/myImageView"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="中国智造 Made in China"
+        android:textSize="35sp"
+        android:layout_below="@+id/myImageView"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

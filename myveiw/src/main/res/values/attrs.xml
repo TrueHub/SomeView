@@ -4,10 +4,51 @@
     <attr name="titleText" format="string"/>
     <attr name="titleTextSize" format="dimension"/>
     <attr name="titleTextColor" format="color"/>
+    <attr name="image" format="reference"/>
+    <attr name="scaleType" >
+        <enum name="fillXY" value="0"/>
+        <enum name="center" value="1"/>
+    </attr>
+    
+    <attr name="firstColor" format="color"/>
+    <attr name="secondColor" format="color"/>
+    <attr name="thirdColor" format="color"/>
+    <attr name="speed" format="integer"/>
+    <attr name="circleWidth" format="dimension"/>
+
+    <attr name="dotCount" format="integer"/>
+    <attr name="splitSize" format="integer"/>
+    <attr name="background" format="reference"/>
 
     <declare-styleable name="CustomTitleView">
         <attr name="titleText"/>
         <attr name="titleTextSize"/>
         <attr name="titleTextColor"/>
     </declare-styleable>
+
+    <declare-styleable name="CustomImageView">
+        <attr name="titleText"/>
+        <attr name="titleTextSize"/>
+        <attr name="titleTextColor"/>
+        <attr name="scaleType"/>
+        <attr name="image"/>
+    </declare-styleable>
+
+    <declare-styleable name="MyLoadingView">
+        <attr name="firstColor"/>
+        <attr name="secondColor"/>
+        <attr name="thirdColor"/>
+        <attr name="speed"/>
+        <attr name="circleWidth"/>
+    </declare-styleable>
+    
+    <declare-styleable name="MyVoiceControlView">
+        <attr name="firstColor"/>
+        <attr name="secondColor"/>
+        <attr name="background"/>
+        <attr name="circleWidth"/>
+        <attr name="dotCount"/>
+        <attr name="splitSize"/>
+    </declare-styleable>
+
 </resources>

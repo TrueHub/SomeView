@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -18,23 +19,23 @@ import java.util.Random;
  * 自定义View：基础篇：实现验证码效果。
  */
 
-public class MyView extends View {
+public class MyTextView extends View {
 
     private Paint mPaint;
     private String mTitleText;
     private int mTitleTextColor;
     private int mTitleTextSize;
 
-    public MyView(Context context) {
+    public MyTextView(Context context) {
         this(context, null);
     }
 
-    public MyView(Context context, AttributeSet attrs) {
+    public MyTextView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
 
-    public MyView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public MyTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         /**获取自定义的样式*/
@@ -120,8 +121,10 @@ public class MyView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
 
-        mPaint.setColor(getResources().getColor(R.color.color_bg));
+            mPaint.setColor(Color.BLUE);
         canvas.drawRect(0, 0, getMeasuredWidth(), getMeasuredHeight(), mPaint);
+
+        canvas.rotate((float) (25 - Math.random() * 50));
 
         mPaint.setColor(mTitleTextColor);
         canvas.drawText(mTitleText, (getWidth() - mPaint.measureText(mTitleText)) / 2, getY(), mPaint);//mPaint.measureText(mTitleText)测量text的长度
