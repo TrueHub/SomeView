@@ -18,7 +18,7 @@
         custom:secondColor="@color/colorPrimary"
         custom:thirdColor="@color/colorPrimaryDark"
         custom:speed="2"
-        />
+        android:id="@+id/myLoadingView" />
 
     <com.ec.vone.view.MyVoiceControlView
         android:layout_width="100dp"
@@ -29,16 +29,18 @@
         custom:dotCount="10"
         custom:firstColor="@color/color_bg_1"
         custom:secondColor="@color/current"
-        custom:splitSize="20"/>
+        custom:splitSize="20"
+        android:id="@+id/myVoiceControlView" />
     <com.ec.vone.view.MyTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         custom:titleText="2333"
         custom:titleTextColor="#eeeeee"
         custom:titleTextSize="50sp"
-        android:layout_centerInParent="true"
         android:id="@+id/myTextView"
-        />
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
         <!--custom:image="@drawable/ic_bluetooth_audio_black_24dp"-->
     <com.ec.vone.view.MyImageView
@@ -49,15 +51,29 @@
         custom:titleText="中国智造 Made in China"
         custom:titleTextColor="#231313"
         custom:titleTextSize="35sp"
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/myTextView"
-        android:id="@+id/myImageView"/>
+        android:id="@+id/myImageView"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/textView" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="中国智造 Made in China"
         android:textSize="35sp"
-        android:layout_below="@+id/myImageView"
-        android:layout_centerHorizontal="true"/>
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/textView" />
+
+    <com.ec.vone.view.CircleLoadingView
+        android:padding="30dp"
+        custom:firstColor="#6ac3ad"
+        custom:secondColor="#5d8ac6"
+        custom:progress="48"
+        custom:circleWidth="12dp"
+        android:id="@+id/button"
+        android:layout_width="150dp"
+        android:layout_height="130dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/myTextView" />
 
 </RelativeLayout>

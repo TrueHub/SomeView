@@ -19,6 +19,7 @@
     <attr name="dotCount" format="integer"/>
     <attr name="splitSize" format="integer"/>
     <attr name="background" format="reference"/>
+    <attr name="progress" format="integer"/>
 
     <declare-styleable name="CustomTitleView">
         <attr name="titleText"/>
@@ -49,6 +50,14 @@
         <attr name="circleWidth"/>
         <attr name="dotCount"/>
         <attr name="splitSize"/>
+    </declare-styleable>
+
+    <declare-styleable name="CircleLoading">
+        <attr name="firstColor"/>
+        <attr name="secondColor"/>
+        <attr name="circleWidth"/>
+        <attr name="progress"/>
+
     </declare-styleable>
 
 </resources>

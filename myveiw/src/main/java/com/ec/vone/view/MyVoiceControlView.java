@@ -65,7 +65,7 @@ public class MyVoiceControlView extends View {
                     break;
                 case R.styleable.MyVoiceControlView_circleWidth:
                     mCircleWidth = typedArray.getDimensionPixelSize(attr, (int) TypedValue.applyDimension(
-                            TypedValue.COMPLEX_UNIT_SP, 16, getResources().getDisplayMetrics()
+                            TypedValue.COMPLEX_UNIT_PX, 16, getResources().getDisplayMetrics()
                     ));
                     break;
                 case R.styleable.MyVoiceControlView_splitSize:
