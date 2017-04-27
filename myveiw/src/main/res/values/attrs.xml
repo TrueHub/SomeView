@@ -9,17 +9,18 @@
         <enum name="fillXY" value="0"/>
         <enum name="center" value="1"/>
     </attr>
-    
     <attr name="firstColor" format="color"/>
     <attr name="secondColor" format="color"/>
     <attr name="thirdColor" format="color"/>
     <attr name="speed" format="integer"/>
     <attr name="circleWidth" format="dimension"/>
-
     <attr name="dotCount" format="integer"/>
     <attr name="splitSize" format="integer"/>
     <attr name="background" format="reference"/>
     <attr name="progress" format="integer"/>
+    <attr name="graduationCount" format="integer"/><!--大刻度-->
+    <attr name="secondGraduationCount" format="integer"/><!--2级刻度-->
+    <attr name="centerText" format="string"/>
 
     <declare-styleable name="CustomTitleView">
         <attr name="titleText"/>
@@ -58,6 +59,15 @@
         <attr name="circleWidth"/>
         <attr name="progress"/>
 
+    </declare-styleable>
+    
+    <declare-styleable name="MyDialView">
+        <attr name="firstColor"/>
+        <attr name="secondColor"/>
+        <attr name="graduationCount"/>
+        <attr name="secondGraduationCount"/>
+        <attr name="centerText"/>
+        <attr name="progress"/>
     </declare-styleable>
 
 </resources>

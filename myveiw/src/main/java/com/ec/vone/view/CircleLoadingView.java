@@ -89,6 +89,7 @@ public class CircleLoadingView extends View {
         mPaint.setColor(mSecondColor);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(mCircleWidth);
+        mPaint.setStrokeCap(Paint.Cap.ROUND);
 
         canvas.drawArc(oval, 270, mProgress * 3.6f, false, mPaint);
 

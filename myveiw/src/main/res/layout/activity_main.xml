@@ -73,7 +73,20 @@
         android:layout_width="150dp"
         android:layout_height="130dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_above="@+id/myTextView" />
+        android:layout_alignParentRight="true" />
+
+    <com.ec.vone.view.MyDialView
+        android:id="@+id/textView2"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        custom:firstColor="#88ebcd"
+        custom:secondColor="#123123"
+        custom:secondGraduationCount="3"
+        custom:progress="30"
+        custom:graduationCount="8"
+        custom:centerText="牛市"
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView"
+        android:layout_alignTop="@+id/myTextView" />
 
 </RelativeLayout>
