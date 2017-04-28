@@ -21,6 +21,7 @@
     <attr name="graduationCount" format="integer"/><!--大刻度-->
     <attr name="secondGraduationCount" format="integer"/><!--2级刻度-->
     <attr name="centerText" format="string"/>
+    <attr name="color" format="color"/>
 
     <declare-styleable name="CustomTitleView">
         <attr name="titleText"/>
@@ -62,8 +63,7 @@
     </declare-styleable>
     
     <declare-styleable name="MyDialView">
-        <attr name="firstColor"/>
-        <attr name="secondColor"/>
+        <attr name="color"/>
         <attr name="graduationCount"/>
         <attr name="secondGraduationCount"/>
         <attr name="centerText"/>

@@ -25,15 +25,15 @@ public class MyDialView extends View {
         this(context, attrs, 0);
     }
 
-    private int mFirstColor, mSecondColor;
+    private int mColor;
     private int mProgress;
     private int mGraduationCount, mSecondGraduationCount;//大刻度数量和二级刻度数量
     private String mCenterText;
 
     private Paint mPaint;
 
-    //分别为：外圆半径，内圆半径，内圆的内层圆半径，大刻度尺寸，二级刻度尺寸
-    private float mOutRadius, mInsideRadius,mStrokeWidth, mThirdRadius, mDuationSize, mGraduationSecondSize;
+    private float mDuationSize;
+    private float mGraduationSecondSize;
 
     public MyDialView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -46,11 +46,8 @@ public class MyDialView extends View {
                 case R.styleable.MyDialView_centerText:
                     mCenterText = typedArray.getString(attr);
                     break;
-                case R.styleable.MyDialView_firstColor:
-                    mFirstColor = typedArray.getColor(attr, Color.BLUE);
-                    break;
-                case R.styleable.MyDialView_secondColor:
-                    mSecondColor = typedArray.getColor(attr, Color.GREEN);
+                case R.styleable.MyDialView_color:
+                    mColor = typedArray.getColor(attr, Color.BLUE);
                     break;
                 case R.styleable.MyDialView_graduationCount:
                     mGraduationCount = typedArray.getInteger(attr, 5);
@@ -73,50 +70,103 @@ public class MyDialView extends View {
         super.onDraw(canvas);
 
         float width = getWidth(), height = getHeight();
-        mStrokeWidth = 5;//线条粗细
-        if (width > height) {
-            mOutRadius = (height - getPaddingBottom() - getPaddingTop() - mStrokeWidth) / 2;
+        float mStrokeWidth = 3;
+        float mOutRadius;//外圈半径
+//        if (width > height) {
+        if (width - height * 3 / 2 + (getPaddingBottom() + getPaddingTop() + mStrokeWidth) / 2 >= 0) {
+            mOutRadius = (height - getPaddingBottom() - getPaddingTop() - mStrokeWidth) / 2 + (height + getPaddingTop() + getPaddingBottom() + mStrokeWidth) / 8;
         } else {
             mOutRadius = (width - getPaddingLeft() - getPaddingRight() - mStrokeWidth) / 2;
         }
-        mInsideRadius = mOutRadius / 7 * 5;//这里将内圆半径设为外圆的5/6
-        mThirdRadius = mOutRadius / 2; //内圆的画笔粗为外圆半径的1/3
+        float mInsideRadius = mOutRadius / 14 * 11;//内圈外弧半径
+        float mThirdRadius = mOutRadius / 2;//内圈内弧半径
 
+        //下方空白部分，圆心根据这个值向下偏移
+        float a = mOutRadius - mInsideRadius / 2;
+        canvas.translate(0, a / 2);//画布向下偏移
 
-        float a = (float) ((getHeight()  -Math.sqrt(2) * mInsideRadius) /2);//下方空白部分，圆心根据这个值向下偏移
 
         RectF rectF = new RectF();
-        rectF.left = width / 2 - mOutRadius ;
-        rectF.right = rectF.left + mOutRadius * 2 ;
-        rectF.top = height / 2 - mOutRadius + a /2;
-        rectF.bottom = rectF.top + mOutRadius * 2 ;
+        rectF.left = width / 2 - mOutRadius;
+        rectF.right = rectF.left + mOutRadius * 2;
+        rectF.top = height / 2 - mOutRadius;
+        rectF.bottom = rectF.top + mOutRadius * 2;
 
-        mPaint.setColor(mFirstColor);
+        mPaint.setColor(mColor);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(mStrokeWidth);
-        canvas.drawArc(rectF,165,210,false,mPaint);
+        canvas.drawArc(rectF, 165, 210, false, mPaint);
 
         //画内圈的外弧线
-        rectF.left = width / 2 - mInsideRadius ;
-        rectF.right = rectF.left + mInsideRadius * 2 ;
-        rectF.top = height / 2 - mInsideRadius + a /2;
-        rectF.bottom = rectF.top + mInsideRadius * 2 ;
-        canvas.drawArc(rectF,150,240,true,mPaint);
+        rectF.left = width / 2 - mInsideRadius;
+        rectF.right = rectF.left + mInsideRadius * 2;
+        rectF.top = height / 2 - mInsideRadius;
+        rectF.bottom = rectF.top + mInsideRadius * 2;
+        canvas.drawArc(rectF, 150, 240, false, mPaint);
+
+        //圆心坐标：
+        float Ox = rectF.centerX();
+        float Oy = rectF.centerY();
+
+        //画个伪圆心
+        canvas.drawCircle(Ox, Oy, 5, mPaint);
 
         //内圈的内弧线
-/*        mPaint.setColor(Color.WHITE);
-        rectF.left = width / 2 - mThirdRadius ;
-        rectF.right = rectF.left + mThirdRadius * 2 ;
-        rectF.top = height / 2 - mThirdRadius + a /2;
-        rectF.bottom = rectF.top + mThirdRadius * 2 ;
-        canvas.drawArc(rectF,150,240,true,mPaint);
+        rectF.left = width / 2 - mThirdRadius;
+        rectF.right = rectF.left + mThirdRadius * 2;
+        rectF.top = height / 2 - mThirdRadius;
+        rectF.bottom = rectF.top + mThirdRadius * 2;
+        canvas.drawArc(rectF, 150, 240, false, mPaint);
 
-        mPaint.setColor(mFirstColor);*/
-        rectF.left = width / 2 - mThirdRadius ;
-        rectF.right = rectF.left + mThirdRadius * 2 ;
-        rectF.top = height / 2 - mThirdRadius + a /2;
-        rectF.bottom = rectF.top + mThirdRadius * 2 ;
-        canvas.drawArc(rectF,150,240,false,mPaint);
 
+        //封口
+        canvas.drawLine((float) (width / 2 - Math.sqrt(3) / 2 * mInsideRadius),
+                Oy + (mInsideRadius - mStrokeWidth) / 2, (float) (width / 2 - Math.sqrt(3) / 2 * mThirdRadius),
+                Oy + (mThirdRadius - mStrokeWidth) / 2, mPaint);
+
+        canvas.drawLine((float) (width / 2 + Math.sqrt(3) / 2 * mInsideRadius),
+                Oy + (mInsideRadius - mStrokeWidth) / 2, (float) (width / 2 + Math.sqrt(3) / 2 * mThirdRadius),
+                Oy + (mThirdRadius - mStrokeWidth) / 2, mPaint);
+
+        //画填充部分
+        mStrokeWidth = mInsideRadius - mThirdRadius;
+        rectF.left = (width + mStrokeWidth) / 2 - mInsideRadius;
+        rectF.right = (width + mStrokeWidth) / 2 + mThirdRadius;
+        rectF.top = Oy - mThirdRadius - mStrokeWidth / 2;
+        rectF.bottom = Oy + mThirdRadius + mStrokeWidth / 2;
+        mPaint.setStrokeWidth(mStrokeWidth);
+
+        float needleAngle = 2.1f * mProgress;//指针偏移的角度
+        float strokeAngle = 15 + 2.1f * mProgress;
+        if (mProgress == 0) strokeAngle = 0;
+        if (mProgress == 100) strokeAngle = 240;
+
+        canvas.drawArc(rectF, 150, strokeAngle, false, mPaint);
+
+        //画仪表的指针
+        float needleRadius = (mOutRadius + mInsideRadius) / 2;//指针长度。定义为外圆内圆的外圈之差的二分之一
+        float needleStopX = (float) (Ox + needleRadius * Math.cos((needleAngle + 165) * Math.PI / 180));
+        float needleStopY = (float) (Oy + needleRadius * Math.sin((needleAngle + 165) * Math.PI / 180));
+
+        mPaint.setStrokeWidth(5);
+        canvas.drawLine(Ox, Oy, needleStopX, needleStopY, mPaint);
+
+        //画刻度
+        mPaint.setStrokeWidth(2);
+        //最上面的刻度线
+        canvas.rotate(-105, Ox, Oy);
+//        canvas.drawLine(width / 2, height / 2 - mOutRadius, width / 2, height / 2 - mOutRadius + (mOutRadius - mInsideRadius) / 3 * 2, mPaint);
+        for (int i = 0; i <= mSecondGraduationCount * mGraduationCount; i++) {
+            if (i % mSecondGraduationCount == 0) {
+                canvas.drawLine(width / 2 , height / 2 - mOutRadius, width / 2, height / 2 - mOutRadius + (mOutRadius - mInsideRadius) / 3 * 2, mPaint);
+            }
+            canvas.drawLine(width / 2, height / 2 - mOutRadius, width / 2, height / 2 - mOutRadius + (mOutRadius - mInsideRadius) / 3 , mPaint);
+            canvas.rotate(210 / (mSecondGraduationCount * mGraduationCount * 1.0f), Ox, Oy);
+        }
+    }
+
+    public void setProgress(int progress){
+        this.mProgress = progress;
+        postInvalidate();
     }
 }

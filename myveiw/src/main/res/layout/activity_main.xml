@@ -32,6 +32,7 @@
         custom:splitSize="20"
         android:id="@+id/myVoiceControlView" />
     <com.ec.vone.view.MyTextView
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         custom:titleText="2333"
@@ -53,15 +54,9 @@
         custom:titleTextSize="35sp"
         android:id="@+id/myImageView"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/textView" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="中国智造 Made in China"
-        android:textSize="35sp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/textView" />
+        android:visibility="gone"
+        />
+
 
     <com.ec.vone.view.CircleLoadingView
         android:padding="30dp"
@@ -69,24 +64,34 @@
         custom:secondColor="#5d8ac6"
         custom:progress="48"
         custom:circleWidth="12dp"
-        android:id="@+id/button"
+        android:id="@+id/circleLoadingView"
         android:layout_width="150dp"
         android:layout_height="130dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true" />
 
     <com.ec.vone.view.MyDialView
-        android:id="@+id/textView2"
+        android:layout_centerInParent="true"
+        android:id="@+id/myDialView"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        custom:firstColor="#88ebcd"
-        custom:secondColor="#123123"
-        custom:secondGraduationCount="3"
-        custom:progress="30"
-        custom:graduationCount="8"
-        custom:centerText="牛市"
-        android:layout_alignRight="@+id/textView"
-        android:layout_alignEnd="@+id/textView"
-        android:layout_alignTop="@+id/myTextView" />
+        custom:color="#78ccdf"
+        custom:progress="40"
+        custom:secondGraduationCount="2"
+        custom:graduationCount="10"
+        custom:centerText="牛"/>
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/myDialView"
+        android:layout_alignLeft="@+id/myDialView"
+        android:layout_alignStart="@+id/myDialView"
+        android:max="100"
+        android:progress="3"
+        android:layout_alignRight="@+id/myDialView"
+        android:layout_alignEnd="@+id/myDialView"/>
 
 </RelativeLayout>

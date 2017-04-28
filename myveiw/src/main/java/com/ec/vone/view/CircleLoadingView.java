@@ -95,4 +95,9 @@ public class CircleLoadingView extends View {
 
     }
 
+    public void setProgress(int progress) {
+        this.mProgress = progress;
+        invalidate();
+    }
+
 }
