@@ -127,7 +127,6 @@ public class MyImageView extends View {
 
         //画title
         //1.mWidth已经指定，即不是wrapContent的状态：
-
         mPaint.setColor(mImageTitleColor);
 //        mPaint.setStyle(Paint.Style.FILL);
         mPaint.setStrokeWidth(3);

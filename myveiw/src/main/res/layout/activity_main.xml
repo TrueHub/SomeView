@@ -6,6 +6,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical"
               tools:context="com.ec.vone.MainActivity"
+                android:visibility="gone"
               android:weightSum="1">
 
     <com.ec.vone.view.MyLoadingView
@@ -18,6 +19,7 @@
         custom:secondColor="@color/colorPrimary"
         custom:thirdColor="@color/colorPrimaryDark"
         custom:speed="2"
+        android:visibility="gone"
         android:id="@+id/myLoadingView" />
 
     <com.ec.vone.view.MyVoiceControlView
@@ -67,20 +69,23 @@
         android:layout_width="150dp"
         android:layout_height="130dp"
         android:layout_alignParentTop="true"
+        android:visibility="gone"
         android:layout_alignParentRight="true" />
 
     <com.ec.vone.view.MyDialView
+        android:visibility="gone"
         android:layout_centerInParent="true"
         android:id="@+id/myDialView"
         android:layout_width="200dp"
         android:layout_height="200dp"
         custom:color="#78ccdf"
-        custom:progress="40"
-        custom:secondGraduationCount="2"
-        custom:graduationCount="10"
+        custom:progress="9"
+        custom:secondGraduationCount="8"
+        custom:graduationCount="8"
         custom:centerText="牛"/>
 
     <SeekBar
+        android:visibility="gone"
         android:id="@+id/seekBar"
         style="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="wrap_content"
@@ -92,5 +97,13 @@
         android:progress="3"
         android:layout_alignRight="@+id/myDialView"
         android:layout_alignEnd="@+id/myDialView"/>
+
+    <com.ec.vone.view.LinechartView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        custom:background="@color/color_bg"
+        custom:lineColor="@color/colorAccent"
+        custom:gridLineColor="@color/alphaaa"
+        />
 
 </RelativeLayout>

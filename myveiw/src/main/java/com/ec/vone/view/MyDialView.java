@@ -27,13 +27,10 @@ public class MyDialView extends View {
 
     private int mColor;
     private int mProgress;
-    private int mGraduationCount, mSecondGraduationCount;//大刻度数量和二级刻度数量
+    private int mGraduationCount, mSecondGraduationCount;//大刻度数量和每个大刻度内的二级刻度数量
     private String mCenterText;
 
     private Paint mPaint;
-
-    private float mDuationSize;
-    private float mGraduationSecondSize;
 
     public MyDialView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -152,30 +149,23 @@ public class MyDialView extends View {
         canvas.drawLine(Ox, Oy, needleStopX, needleStopY, mPaint);
 
         //画表盘中心
-
         rectF.left = Ox - mOutRadius / 14 * 3;
         rectF.right = Ox + mOutRadius / 14 * 3;
         rectF.top = Oy - mOutRadius / 7;
         rectF.bottom = Oy + mOutRadius / 7;
-
-//        canvas.drawOval(rectF,mPaint);
-        canvas.drawArc(rectF,0,360,true,mPaint);
+        canvas.drawArc(rectF,0,360,true,mPaint);//中心的椭圆
 
         //画刻度
         mPaint.setStrokeWidth(2);
-        //最上面的刻度线
-        canvas.rotate(-105, Ox, Oy);
-//        canvas.drawLine(width / 2, height / 2 - mOutRadius, width / 2, height / 2 - mOutRadius + (mOutRadius - mInsideRadius) / 3 * 2, mPaint);
+        canvas.rotate(-105, Ox, Oy);//先旋转到最左边，准备绘制
         for (int i = 0; i <= mSecondGraduationCount * mGraduationCount; i++) {
-            if (i % mSecondGraduationCount == 0) {
+            if (i % mSecondGraduationCount == 0) {//根据定义的值绘制出大刻度线
                 canvas.drawLine(width / 2 , height / 2 - mOutRadius, width / 2, height / 2 - mOutRadius + (mOutRadius - mInsideRadius) / 3 * 2, mPaint);
             }
-            canvas.drawLine(width / 2, height / 2 - mOutRadius, width / 2, height / 2 - mOutRadius + (mOutRadius - mInsideRadius) / 3 , mPaint);
-            canvas.rotate(210 / (mSecondGraduationCount * mGraduationCount * 1.0f), Ox, Oy);
+            canvas.drawLine(width / 2, height / 2 - mOutRadius, width / 2, height / 2 - mOutRadius + (mOutRadius - mInsideRadius) / 3 , mPaint);//小刻度
+            canvas.rotate(210 / (mSecondGraduationCount * mGraduationCount * 1.0f), Ox, Oy);//根据大小刻度总量，计算每个小刻度之间的距离，每次循环末尾旋转画布
         }
-        canvas.rotate( -105,Ox, Oy );
-
-
+        canvas.rotate( -105,Ox, Oy );//画布归位
     }
 
     public void setProgress(int progress){

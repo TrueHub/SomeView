@@ -22,6 +22,8 @@
     <attr name="secondGraduationCount" format="integer"/><!--2级刻度-->
     <attr name="centerText" format="string"/>
     <attr name="color" format="color"/>
+    <attr name="lineColor" format="color"/>
+    <attr name="gridLineColor" format="color"/>
 
     <declare-styleable name="CustomTitleView">
         <attr name="titleText"/>
@@ -68,6 +70,12 @@
         <attr name="secondGraduationCount"/>
         <attr name="centerText"/>
         <attr name="progress"/>
+    </declare-styleable>
+
+    <declare-styleable name="LinechartView">
+        <attr name="lineColor"/>
+        <attr name="gridLineColor"/>
+        <attr name="background"/>
     </declare-styleable>
 
 </resources>
