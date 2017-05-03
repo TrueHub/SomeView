@@ -151,6 +151,16 @@ public class MyDialView extends View {
         mPaint.setStrokeWidth(5);
         canvas.drawLine(Ox, Oy, needleStopX, needleStopY, mPaint);
 
+        //画表盘中心
+
+        rectF.left = Ox - mOutRadius / 14 * 3;
+        rectF.right = Ox + mOutRadius / 14 * 3;
+        rectF.top = Oy - mOutRadius / 7;
+        rectF.bottom = Oy + mOutRadius / 7;
+
+//        canvas.drawOval(rectF,mPaint);
+        canvas.drawArc(rectF,0,360,true,mPaint);
+
         //画刻度
         mPaint.setStrokeWidth(2);
         //最上面的刻度线
@@ -163,6 +173,9 @@ public class MyDialView extends View {
             canvas.drawLine(width / 2, height / 2 - mOutRadius, width / 2, height / 2 - mOutRadius + (mOutRadius - mInsideRadius) / 3 , mPaint);
             canvas.rotate(210 / (mSecondGraduationCount * mGraduationCount * 1.0f), Ox, Oy);
         }
+        canvas.rotate( -105,Ox, Oy );
+
+
     }
 
     public void setProgress(int progress){

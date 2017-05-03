@@ -59,7 +59,6 @@
 
 
     <com.ec.vone.view.CircleLoadingView
-        android:padding="30dp"
         custom:firstColor="#6ac3ad"
         custom:secondColor="#5d8ac6"
         custom:progress="48"

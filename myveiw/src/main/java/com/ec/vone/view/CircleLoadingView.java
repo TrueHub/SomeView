@@ -67,8 +67,9 @@ public class CircleLoadingView extends View {
         float radius = (getWidth() - getPaddingLeft() - getPaddingRight()) / 2;
         float r2 = (getHeight() - getPaddingTop() - getPaddingBottom()) / 2;
         radius = radius > r2 ? r2 : radius;
-        mPaint.setColor(mFirstColor);
-        canvas.drawCircle(getWidth() / 2, getHeight() / 2, radius, mPaint);//画出了作为背景底色的圆
+        Paint cPaint = new Paint();
+        cPaint.setColor(mFirstColor);
+        canvas.drawCircle(getWidth() / 2, getHeight() / 2, radius, cPaint);//画出了作为背景底色的圆
 
         float circleRadius = radius - mCircleWidth / 2;
         float diffWandH = Math.abs(getWidth() - getHeight());

@@ -86,43 +86,33 @@ public class MyVoiceControlView extends View {
         mPaint.setStrokeCap(Paint.Cap.ROUND);//线段的断点形状为round
         mPaint.setStyle(Paint.Style.STROKE);
         int center = getWidth() / 2;
-        int radius = center - mCircleWidth / 2;
 
-
-        /**
-         * 根据需要画的个数以及间隙计算每个块块所占的比例*360
-         */
+        //根据需要画的个数以及间隙计算每个块块所占的比例*240,不画整圆了这里
         float itemSize = (240 * 1.0f - (mDotCount - 1) * mSplitSize) / mDotCount;
-
+        // 用于定义的圆弧的形状和大小的界限
         RectF oval = new RectF(mCircleWidth / 2, mCircleWidth / 2,
-                getWidth() - mCircleWidth / 2, getWidth() - mCircleWidth / 2); // 用于定义的圆弧的形状和大小的界限
+                getWidth() - mCircleWidth / 2, getWidth() - mCircleWidth / 2);
 
         mPaint.setColor(mFirstColor); // 设置圆环的颜色
         for (int i = 0; i < mDotCount; i++) {
             canvas.drawArc(oval, i * (itemSize + mSplitSize) + 150, itemSize, false, mPaint); // 根据进度画圆弧
         }
-
         mPaint.setColor(mSecondColor); // 设置圆环的颜色
-
+        // 根据进度绘制圆弧
         for (int i = 0; i < mCurrentCount; i++) {
-            canvas.drawArc(oval, i * (itemSize + mSplitSize) + 150, itemSize, false, mPaint); // 根据进度画圆弧
+            canvas.drawArc(oval, i * (itemSize + mSplitSize) + 150, itemSize, false, mPaint);
         }
-
-
         int r = center - mCircleWidth;
-
         mRect.left = (int) ((1 - Math.sqrt(2) / 2) * r + mCircleWidth);
         mRect.top = (int) ((1 - Math.sqrt(2) / 2) * r + mCircleWidth);
         mRect.right = (int) ((1 + Math.sqrt(2) / 2) * r + mCircleWidth);
         mRect.bottom = (int) ((1 + Math.sqrt(2) / 2) * r + mCircleWidth);
-
         if (mImage.getWidth() < Math.sqrt(2) * r) {//如果图片的尺寸过小，无法与外圆相交，就使用它本来的尺寸
             mRect.left = r + mCircleWidth - mImage.getWidth() / 2;
             mRect.right = mRect.left + mImage.getWidth();
             mRect.top = r + mCircleWidth - mImage.getWidth() / 2;
             mRect.bottom = mRect.top + mImage.getWidth();
         }
-
         canvas.drawBitmap(mImage, null, mRect, mPaint);
 
 
@@ -154,7 +144,6 @@ public class MyVoiceControlView extends View {
             case MotionEvent.ACTION_UP:
                 break;
             case MotionEvent.ACTION_MOVE:
-
                 //x轴方向move事件
                 int xCurrent = (int) event.getX() - xLast;
                 int moveCountX = (int) (xCurrent / moveLength);
@@ -169,7 +158,6 @@ public class MyVoiceControlView extends View {
                         xLast = (int) event.getX();
                     }
                 }
-
                 //y轴方向move事件
                 int yCurrent = (int) (event.getY() - yLast);
                 int moveCountY = (int) (yCurrent / moveLength);
@@ -184,7 +172,6 @@ public class MyVoiceControlView extends View {
                         yLast = (int) event.getY();
                     }
                 }
-
                 break;
         }
         return true;
