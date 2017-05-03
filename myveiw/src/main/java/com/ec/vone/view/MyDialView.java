@@ -14,6 +14,7 @@ import com.ec.vone.R;
 
 /**
  * Created by vone on 2017/4/27.
+ * 仪表盘控件
  */
 
 public class MyDialView extends View {

@@ -5,105 +5,16 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context="com.ec.vone.MainActivity"
-                android:visibility="gone"
-              android:weightSum="1">
-
-    <com.ec.vone.view.MyLoadingView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        custom:circleWidth="10dp"
-        custom:firstColor="@color/colorAccent"
-        custom:secondColor="@color/colorPrimary"
-        custom:thirdColor="@color/colorPrimaryDark"
-        custom:speed="2"
-        android:visibility="gone"
-        android:id="@+id/myLoadingView" />
-
-    <com.ec.vone.view.MyVoiceControlView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:visibility="visible"
-        custom:background="@drawable/dududu"
-        custom:circleWidth="10dp"
-        custom:dotCount="10"
-        custom:firstColor="@color/color_bg_1"
-        custom:secondColor="@color/current"
-        custom:splitSize="20"
-        android:id="@+id/myVoiceControlView" />
-    <com.ec.vone.view.MyTextView
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        custom:titleText="2333"
-        custom:titleTextColor="#eeeeee"
-        custom:titleTextSize="50sp"
-        android:id="@+id/myTextView"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-        <!--custom:image="@drawable/ic_bluetooth_audio_black_24dp"-->
-    <com.ec.vone.view.MyImageView
-        android:layout_width="385dp"
-        android:layout_height="100dp"
-        custom:image="@mipmap/ic_launcher"
-        custom:scaleType="center"
-        custom:titleText="中国智造 Made in China"
-        custom:titleTextColor="#231313"
-        custom:titleTextSize="35sp"
-        android:id="@+id/myImageView"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone"
-        />
-
-
-    <com.ec.vone.view.CircleLoadingView
-        custom:firstColor="#6ac3ad"
-        custom:secondColor="#5d8ac6"
-        custom:progress="48"
-        custom:circleWidth="12dp"
-        android:id="@+id/circleLoadingView"
-        android:layout_width="150dp"
-        android:layout_height="130dp"
-        android:layout_alignParentTop="true"
-        android:visibility="gone"
-        android:layout_alignParentRight="true" />
-
-    <com.ec.vone.view.MyDialView
-        android:visibility="gone"
-        android:layout_centerInParent="true"
-        android:id="@+id/myDialView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        custom:color="#78ccdf"
-        custom:progress="9"
-        custom:secondGraduationCount="8"
-        custom:graduationCount="8"
-        custom:centerText="牛"/>
-
-    <SeekBar
-        android:visibility="gone"
-        android:id="@+id/seekBar"
-        style="@style/Widget.AppCompat.SeekBar.Discrete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/myDialView"
-        android:layout_alignLeft="@+id/myDialView"
-        android:layout_alignStart="@+id/myDialView"
-        android:max="100"
-        android:progress="3"
-        android:layout_alignRight="@+id/myDialView"
-        android:layout_alignEnd="@+id/myDialView"/>
+              tools:context="com.ec.vone.MainActivity">
 
     <com.ec.vone.view.LinechartView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:id="@+id/linechartView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         custom:background="@color/color_bg"
-        custom:lineColor="@color/colorAccent"
-        custom:gridLineColor="@color/alphaaa"
-        />
+        custom:gridLineColor="#000"
+        custom:lineColor="@color/colorAccent" />
 
 </RelativeLayout>

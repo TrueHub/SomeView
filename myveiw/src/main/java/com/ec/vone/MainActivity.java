@@ -2,57 +2,43 @@ package com.ec.vone;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.SeekBar;
 
-import com.ec.vone.view.CircleLoadingView;
-import com.ec.vone.view.MyDialView;
-import com.ec.vone.view.MyImageView;
-import com.ec.vone.view.MyLoadingView;
-import com.ec.vone.view.MyTextView;
-import com.ec.vone.view.MyVoiceControlView;
+import com.ec.vone.view.LinechartView;
+
+import static android.R.attr.value;
 
 public class MainActivity extends AppCompatActivity {
 
-    private MyLoadingView myLoadingView;
-    private MyVoiceControlView myVoiceControlView;
-    private MyTextView myTextView;
-    private MyImageView myImageView;
-    private CircleLoadingView circleLoadingView;
-    private MyDialView myDialView;
-    private SeekBar seekBar;
+    private LinechartView linechartView;
+    private long[] times = new long[300];
+    private int[] valueZ = new int[300];
+    private int[] valueY = new int[300];
+    private int[] valueX = new int[300];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         initView();
-
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                myDialView.setProgress(progress);
-                circleLoadingView.setProgress(progress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+        long now = (int) (System.currentTimeMillis() /1000);
+        for (int i = 0; i < 300; i++) {
+            valueZ[i] = (int) (Math.random() * 6000 - 3000);
+            valueX[i] = (int) (Math.random() * 1000) - 500;
+            valueY[i] = (int) (Math.random() * -200) - 200;
+            times[i] = now;
+            now++;
+        }
+        linechartView.setTimes(times);
+        linechartView.setValuesZ(valueZ);
+        linechartView.setValuesY(valueY);
+        linechartView.setValuesX(valueX);
+        linechartView.setValueName("Mag");
     }
 
     private void initView() {
-        myLoadingView = (MyLoadingView) findViewById(R.id.myLoadingView);
-        myVoiceControlView = (MyVoiceControlView) findViewById(R.id.myVoiceControlView);
-        myTextView = (MyTextView) findViewById(R.id.myTextView);
-        myImageView = (MyImageView) findViewById(R.id.myImageView);
-        circleLoadingView = (CircleLoadingView) findViewById(R.id.circleLoadingView);
-        myDialView = (MyDialView) findViewById(R.id.myDialView);
-        seekBar = (SeekBar) findViewById(R.id.seekBar);
+        linechartView = (LinechartView) findViewById(R.id.linechartView);
     }
+
+
 }
