@@ -9,11 +9,11 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.ec.vone.R;
 import com.ec.vone.view.utils.DateUtils;
+
 /**
  * Created by user on 2017/5/3.
  */
@@ -26,7 +26,7 @@ public class LinechartView extends View {
     private int[] valuesZ;
     private int[] valuesY;
     private int[] valuesX;
-    private int mToppadding =200 ;
+    private int mToppadding = 200;
     private String valueName;
 
     public long[] getTimes() {
@@ -72,7 +72,6 @@ public class LinechartView extends View {
     public void setValuesZ(int[] valuesZ) {
         this.valuesZ = valuesZ;
     }
-
 
 
     public LinechartView(Context context) {
@@ -134,30 +133,30 @@ public class LinechartView extends View {
     protected void onDraw(Canvas canvas) {
 
         Rect rectX = new Rect();
-        rectX.left = 150 + (getWidth() - getPaddingRight() - 50) / 3  * 2;
+        rectX.left = 150 + (getWidth() - getPaddingRight() - 50) / 3 * 2;
         rectX.top = mToppadding + getPaddingTop();
-        rectX.right = (getWidth() - getPaddingRight() - 50) ;
+        rectX.right = (getWidth() - getPaddingRight() - 50);
         rectX.bottom = getHeight() - getPaddingBottom() - 50;
-        drawIng(canvas,"X",valuesX,rectX);
+        drawIng(canvas, "X", valuesX, rectX);
 
         Rect rectY = new Rect();
-        rectY.left = 150 + (getWidth() - getPaddingRight() - 50) / 3 ;
+        rectY.left = 150 + (getWidth() - getPaddingRight() - 50) / 3;
         rectY.top = mToppadding + getPaddingTop();
         rectY.right = (getWidth() - getPaddingRight() - 50) / 3 * 2;
         rectY.bottom = getHeight() - getPaddingBottom() - 50;
-        drawIng(canvas,"Y",valuesY,rectY);
+        drawIng(canvas, "Y", valuesY, rectY);
 
         Rect rectZ = new Rect();
         rectZ.left = 150 + getPaddingRight();
         rectZ.top = mToppadding + getPaddingTop();
-        rectZ.right = (getWidth() - getPaddingRight() - 50) / 3 ;
+        rectZ.right = (getWidth() - getPaddingRight() - 50) / 3;
         rectZ.bottom = getHeight() - getPaddingBottom() - 50;
-        drawIng(canvas,"Z",valuesZ,rectZ);
+        drawIng(canvas, "Z", valuesZ, rectZ);
 
     }
 
 
-    private void drawIng(Canvas canvas , String type , int[] values , Rect r){
+    private void drawIng(Canvas canvas, String type, int[] values, Rect r) {
         mPaint.setColor(mGridLineColor);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(3);
@@ -174,7 +173,7 @@ public class LinechartView extends View {
 
 
         for (int i = 0; i < 5; i++) {
-            canvas.drawLine(i * aW + r.left + aW /4, mToppadding -30, i * aW + r.left + aW /4, mToppadding, mPaint);
+            canvas.drawLine(i * aW + r.left + aW / 4, mToppadding - 30, i * aW + r.left + aW / 4, mToppadding, mPaint);
         }
         //时间轴的黑点
         mPaint.setStrokeWidth(20);
@@ -198,20 +197,20 @@ public class LinechartView extends View {
         String vMax = String.valueOf(vL[2]);
 
         String title = valueName + "_" + type;
-        canvas.drawText(title,r.left + (r.right - r.left) / 2 - mPaint.measureText(title) /2 ,50,mPaint);
+        canvas.drawText(title, r.left + (r.right - r.left) / 2 - mPaint.measureText(title) / 2, 50, mPaint);
         //画时间轴
         canvas.rotate(90, 0, 0);
         for (int i = 0; i < 11; i++) {
             String time = DateUtils.getDateToString(times[times.length / 11 * i] * 1000);
             time = time.substring(time.length() - 5, time.length());
-            canvas.drawText(time, mgH + i * aH - mPaint.measureText(time) / 2, + 100 - r.left, mPaint);
+            canvas.drawText(time, mgH + i * aH - mPaint.measureText(time) / 2, +100 - r.left, mPaint);
         }
         //数值轴
         canvas.rotate(-90, 0, 0);
-        float y = mToppadding -30 - Math.abs(mPaint.getFontMetrics().bottom - mPaint.getFontMetrics().top) / 2;
-        canvas.drawText(vMin , r.left + aW /4 - mPaint.measureText(vMin) / 2, y, mPaint);
-        canvas.drawText(vMid , r.left + aW /4 + aW * 2 - mPaint.measureText(vMid) / 2, y, mPaint);
-        canvas.drawText(vMax , r.left + aW /4 + aW * 4 - mPaint.measureText(vMax) / 2, y, mPaint);
+        float y = mToppadding - 30 - Math.abs(mPaint.getFontMetrics().bottom - mPaint.getFontMetrics().top) / 2;
+        canvas.drawText(vMin, r.left + aW / 4 - mPaint.measureText(vMin) / 2, y, mPaint);
+        canvas.drawText(vMid, r.left + aW / 4 + aW * 2 - mPaint.measureText(vMid) / 2, y, mPaint);
+        canvas.drawText(vMax, r.left + aW / 4 + aW * 4 - mPaint.measureText(vMax) / 2, y, mPaint);
 
         //画点和线
         //现在的y轴是时间，有规律，递增的  x轴是数值，
@@ -224,13 +223,12 @@ public class LinechartView extends View {
         float yy = aH * 10.0f / times.length;
 
         Path path = new Path();
-        for (int i = 0; i < valuesZ.length; i++) {
-            canvas.drawPoint((values[i] - vL[0]) * xx + r.left, mgH + yy * i, mPaint);
+        for (int i = 0; i < values.length; i++) {
             //画path
             if (i == 0) {
-                path.moveTo((values[i] - vL[0]) * xx + r.left , mgH + yy * i);
+                path.moveTo((values[i] - vL[0]) * xx + r.left + aW / 4, mgH + yy * i);
             } else {
-                path.lineTo((values[i] - vL[0]) * xx + r.left , mgH + yy * i);
+                path.lineTo((values[i] - vL[0]) * xx + r.left + aW / 4, mgH + yy * i);
             }
         }
         canvas.drawPath(path, mPaint);
@@ -238,7 +236,7 @@ public class LinechartView extends View {
 
 
     private int[] getMinMaxValue(int[] values) {
-        int min = values[0], max = values[0] ;
+        int min = values[0], max = values[0];
         for (int i = 0; i < values.length - 1; i++) {
 
             if (values[i] > max) max = values[i];
