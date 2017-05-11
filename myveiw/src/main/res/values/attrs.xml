@@ -78,4 +78,9 @@
         <attr name="background"/>
     </declare-styleable>
 
+    <declare-styleable name="BattaryView">
+        <attr name="battaryPercnet" format="integer"/>
+        <attr name="color"/>
+    </declare-styleable>
+
 </resources>

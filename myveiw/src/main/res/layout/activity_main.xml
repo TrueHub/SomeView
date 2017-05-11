@@ -7,14 +7,10 @@
               android:orientation="vertical"
               tools:context="com.ec.vone.MainActivity">
 
-    <com.ec.vone.view.LinechartView
-        android:id="@+id/linechartView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        custom:background="@color/color_bg"
-        custom:gridLineColor="#000"
-        custom:lineColor="@color/colorAccent" />
+    <com.ec.vone.view.utils.BattaryView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        custom:battaryPercnet="20"
+        custom:color="@color/colorPrimary"/>
 
 </RelativeLayout>

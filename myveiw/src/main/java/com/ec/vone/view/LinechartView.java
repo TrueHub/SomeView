@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -26,8 +25,8 @@ public class LinechartView extends View {
     private int[] valuesZ;
     private int[] valuesY;
     private int[] valuesX;
-    private int mToppadding = 200;
     private String valueName;
+    private int mToppadding = 200;
 
     public long[] getTimes() {
         return times;
@@ -78,11 +77,11 @@ public class LinechartView extends View {
         this(context, null);
     }
 
-    public LinechartView(Context context, @Nullable AttributeSet attrs) {
+    public LinechartView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public LinechartView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public LinechartView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs, R.styleable.LinechartView, 0, defStyleAttr);
@@ -171,7 +170,6 @@ public class LinechartView extends View {
 
         //根据values的值，找出最大值和最小值，确定y轴范围
 
-
         for (int i = 0; i < 5; i++) {
             canvas.drawLine(i * aW + r.left + aW / 4, mToppadding - 30, i * aW + r.left + aW / 4, mToppadding, mPaint);
         }
@@ -180,7 +178,7 @@ public class LinechartView extends View {
         for (int i = 0; i < 11; i++) {
             canvas.drawLine(r.left - 20, mgH + i * aH, r.left, mgH + i * aH, mPaint);
             if (i == 10) continue;
-            canvas.drawLine(r.left - 20, mgH + i * aH + aH / 7 * 1, r.left, mgH + i * aH + aH / 7 * 1, mPaint);
+            canvas.drawLine(r.left - 20, mgH + i * aH + aH / 7 , r.left, mgH + i * aH + aH / 7 , mPaint);
             canvas.drawLine(r.left - 20, mgH + i * aH + aH / 7 * 2, r.left, mgH + i * aH + aH / 7 * 2, mPaint);
             canvas.drawLine(r.left - 20, mgH + i * aH + aH / 7 * 3, r.left, mgH + i * aH + aH / 7 * 3, mPaint);
             canvas.drawLine(r.left - 20, mgH + i * aH + aH / 7 * 4, r.left, mgH + i * aH + aH / 7 * 4, mPaint);
@@ -214,11 +212,11 @@ public class LinechartView extends View {
 
         //画点和线
         //现在的y轴是时间，有规律，递增的  x轴是数值，
-        //先求出x轴上每一个单位占多少dp
+
         mPaint.setColor(mLineColor);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(2);
-
+        //先求出x/y轴上每一个单位占多少dp
         float xx = aW * 4.0f / (vL[2] - vL[0]);
         float yy = aH * 10.0f / times.length;
 
