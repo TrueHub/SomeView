@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              xmlns:custom="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context="com.ec.vone.MainActivity">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.ec.vone.MainActivity">
 
     <com.ec.vone.view.BattaryView
-        android:layout_width="wrap_content"
+        
+        android:id="@+id/battery_view"
+        android:layout_centerInParent="true"
+        android:layout_width="600dp"
+        android:layout_height="100dp"
+        custom:battaryPercnet="80"
+        custom:color="@color/colorPrimary" />
+    <SeekBar
+        android:id="@+id/seek"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        custom:battaryPercnet="20"
-        custom:color="@color/colorPrimary"/>
+        android:max="100"
+        />
 
-
-</RelativeLayout>
+</LinearLayout>
