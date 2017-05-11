@@ -1,4 +1,4 @@
-package com.ec.vone.view.utils;
+package com.ec.vone.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
