@@ -13,4 +13,5 @@
         custom:battaryPercnet="20"
         custom:color="@color/colorPrimary"/>
 
+
 </RelativeLayout>
