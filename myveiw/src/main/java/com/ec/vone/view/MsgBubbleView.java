@@ -10,10 +10,12 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
+import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -21,7 +23,6 @@ import android.view.View;
 
 import com.ec.vone.R;
 
-import static android.R.attr.x;
 import static com.ec.vone.view.MsgBubbleView.BubbleState.DEFAULT;
 import static com.ec.vone.view.MsgBubbleView.BubbleState.DISMISS;
 import static com.ec.vone.view.MsgBubbleView.BubbleState.DRAG;
@@ -32,6 +33,8 @@ import static com.ec.vone.view.MsgBubbleView.BubbleState.MOVE;
  */
 
 public class MsgBubbleView extends View {
+    private Paint mTextPaint;
+    private Path mBezierPath;
     /**
      * 气泡颜色
      */
@@ -39,7 +42,7 @@ public class MsgBubbleView extends View {
     /**
      * 中心文字颜色
      */
-    private int mtextColor;
+    private int mTextColor;
     /**
      * 中心文字内容
      */
@@ -94,6 +97,11 @@ public class MsgBubbleView extends View {
     private float mCtrlX, mCtrlY;
 
     /**
+     * 文字的尺寸
+     */
+    private Rect mRect;
+
+    /**
      * 气泡的状态
      */
     enum BubbleState {
@@ -143,7 +151,7 @@ public class MsgBubbleView extends View {
                     mText = typedArray.getString(attr);
                     break;
                 case R.styleable.MsgBubbleView_textColor:
-                    mtextColor = typedArray.getColor(attr, Color.WHITE);
+                    mTextColor = typedArray.getColor(attr, Color.WHITE);
                     break;
                 case R.styleable.MsgBubbleView_color:
                     mColor = typedArray.getColor(attr, Color.RED);
@@ -165,6 +173,13 @@ public class MsgBubbleView extends View {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(mColor);
         mPaint.setTextSize(2);
+
+        mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mTextPaint.setColor(mTextColor);
+        mTextPaint.setTextSize(16);
+
+        mBezierPath = new Path();
+        mRect = new Rect();
     }
 
     @Override
@@ -211,16 +226,42 @@ public class MsgBubbleView extends View {
         if (mState != DISMISS) {
             canvas.drawCircle(mDBCx, mDBCy, mDragBubbleRadius, mPaint);
         }
-        if (mState == DRAG && defLength < defMaxLength / 4 * 3) {
+        if (mState == DRAG && defLength < defMaxLength - defMaxLength / 4) {
             //画小圆
             canvas.drawCircle(mBCx, mBCy, mBubbleRadius, mPaint);
 
             //计算bezier曲线的控制点坐标
-            mCtrlX = (mBCx + mDBCx) /2 ;
-            mCtrlY = (mBCy + mDBCy) /2 ;
+            mCtrlX = (mBCx + mDBCx) / 2;
+            mCtrlY = (mBCy + mDBCy) / 2;
 
+            float sin = (mDBCy - mBCy) / defLength;
+            float cos = (mDBCx - mBCx) / defLength;
+
+            mStartX = mBCx - mBubbleRadius * sin;
+            mStartY = mBCy + mBubbleRadius * cos;
+
+            mDEndX = mDBCx - mDragBubbleRadius * sin;
+            mDendY = mDBCy + mDragBubbleRadius * cos;
+
+            mDStartX = mDBCx + mDragBubbleRadius * sin;
+            mDStartY = mDBCy - mDragBubbleRadius * cos;
+
+            mEndX = mBCx + mBubbleRadius * sin;
+            mEndY = mBCy - mBubbleRadius * cos;
+
+            //画贝塞尔曲线
+            mBezierPath.reset();
+            mBezierPath.moveTo(mStartX, mStartY);
+            mBezierPath.quadTo(mCtrlX, mCtrlY, mDEndX, mDendY);
+            mBezierPath.lineTo(mDStartX, mDStartY);
+            mBezierPath.quadTo(mCtrlX, mCtrlY, mEndX, mEndY);
+            mBezierPath.close();
+            canvas.drawPath(mBezierPath, mPaint);
         }
-
+        if (mState != DISMISS && !TextUtils.isEmpty(mText)) {
+            mTextPaint.getTextBounds(mText, 0, mText.length(), mRect);
+            canvas.drawText(mText, mDBCx - mTextPaint.measureText(mText), mDBCy + mText.length() / 2, mTextPaint);
+        }
 
     }
 
@@ -233,8 +274,8 @@ public class MsgBubbleView extends View {
                 if (mState == DISMISS) break;
                 //request 父控件不要拦截点击事件
                 getParent().requestDisallowInterceptTouchEvent(true);
-                defLength = (float) Math.hypot(event.getX() - mBCx, event.getY() - mBCy);
-                if (defLength < mDragBubbleRadius) {
+                defLength = (float) Math.hypot(event.getX() - mDBCx, event.getY() - mDBCy);
+                if (defLength < mDragBubbleRadius + defMaxLength / 4) {
                     mState = DRAG;
                 } else {
                     mState = DEFAULT;
@@ -249,12 +290,14 @@ public class MsgBubbleView extends View {
                 if (mState == DRAG) {
                     if (defLength < defMaxLength - defMaxLength / 4) {//
                         mBubbleRadius = mDragBubbleRadius - defLength / 8;//小球逐渐变小，直至逐渐消失
-                        if (mBubbleStateListener == null) break;
-                        mBubbleStateListener.onDrag();
+                        if (mBubbleStateListener != null) {
+                            mBubbleStateListener.onDrag();
+                        }
                     } else {//间距大于最大拖拽距离之后
                         mState = MOVE;//开始拖动
-                        if (mBubbleStateListener == null) break;
-                        mBubbleStateListener.onMove();
+                        if (mBubbleStateListener == null) {
+                            mBubbleStateListener.onMove();
+                        }
                     }
                 }
                 invalidate();
@@ -263,13 +306,13 @@ public class MsgBubbleView extends View {
                 getParent().requestDisallowInterceptTouchEvent(false);
 
                 //正在拖拽过程中未移动之前松手，气泡回到原来位置，并颤动一下
-                if (mState == DRAG){
+                if (mState == DRAG) {
                     setBubbleResetAnimation();
-                }else if (mState == MOVE){
-                    if (defLength < 2 * mDragBubbleRadius){
+                } else if (mState == MOVE) {
+                    if (defLength < 2 * mDragBubbleRadius) {
                         //松手的位置距离在气泡原始位置周围，说明user不想取消这个提示，让气泡回到原来位置并颤动
                         setBubbleResetAnimation();
-                    }else {
+                    } else {
                         //取消气泡显示，并显示dismiss的动画
 
                     }
@@ -281,17 +324,17 @@ public class MsgBubbleView extends View {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void setBubbleResetAnimation(){
+    private void setBubbleResetAnimation() {
         ValueAnimator valueAnimator = ValueAnimator.ofObject(new PointFEvaluator(),
-                new PointF(mBCx,mBCy), new PointF(mDBCx,mDBCy));
+                new PointF(mDBCx, mDBCy) ,new PointF(mBCx, mBCy));
         valueAnimator.setDuration(500);
 
         valueAnimator.setInterpolator(new TimeInterpolator() {
             @Override
             public float getInterpolation(float input) {
 
-                float f = 0.571429f ;
-                return (float)(Math.pow(2,-4 * input) * Math.sin((input - f / 4) * (2 * Math.PI) /f) + 1);
+                float f = 0.4234219f;
+                return (float) (Math.pow(2, -4 * input) * Math.sin((input - f / 4) * (2 * Math.PI) / f) + 1);
             }
         });
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -330,6 +373,7 @@ public class MsgBubbleView extends View {
 
     public void setmBubbleStateListener(BubbleStateListener mBubbleStateListener) {
         this.mBubbleStateListener = mBubbleStateListener;
+        invalidate();
     }
 
 }

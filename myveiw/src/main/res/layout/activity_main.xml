@@ -5,10 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.ec.vone.MainActivity">
 
-<com.ec.vone.view.BezierDemo
+<com.ec.vone.view.MsgBubbleView
+    android:id="@+id/msgbubbleview"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
-
+    android:layout_height="match_parent"
+    app:bubbleRadius="20dp"
+    app:color="@color/color_bg"
+    app:centerText="30"
+    app:textColor="@color/colorAccent"
+    />
 </LinearLayout>
