@@ -17,6 +17,7 @@ import static android.os.Build.VERSION_CODES.M;
 
 /**
  * Created by user on 2017/4/25.
+ * 三层循环loading
  */
 
 public class MyLoadingView extends View {

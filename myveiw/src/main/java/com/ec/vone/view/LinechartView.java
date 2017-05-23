@@ -15,6 +15,7 @@ import com.ec.vone.view.utils.DateUtils;
 
 /**
  * Created by user on 2017/5/3.
+ * 折线图
  */
 
 public class LinechartView extends View {

@@ -15,6 +15,7 @@ import com.ec.vone.R;
 
 /**
  * Created by user on 2017/5/11.
+ * 电池
  */
 
 public class BattaryView extends View {

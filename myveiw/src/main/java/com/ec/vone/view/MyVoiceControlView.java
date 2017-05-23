@@ -18,6 +18,7 @@ import com.ec.vone.R;
 
 /**
  * Created by user on 2017/4/25.
+ * 音量控制
  */
 
 public class MyVoiceControlView extends View {
