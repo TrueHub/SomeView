@@ -17,11 +17,13 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.ec.vone.R;
+import com.ec.vone.view.utils.Circleutils;
 
 import static com.ec.vone.view.MsgBubbleView.BubbleState.DEFAULT;
 import static com.ec.vone.view.MsgBubbleView.BubbleState.DISMISS;
@@ -234,7 +236,7 @@ public class MsgBubbleView extends View {
             mCtrlX = (mBCx + mDBCx) / 2;
             mCtrlY = (mBCy + mDBCy) / 2;
 
-            float sin = (mDBCy - mBCy) / defLength;
+            /*float sin = (mDBCy - mBCy) / defLength;
             float cos = (mDBCx - mBCx) / defLength;
 
             mStartX = mBCx - mBubbleRadius * sin;
@@ -247,7 +249,85 @@ public class MsgBubbleView extends View {
             mDStartY = mDBCy - mDragBubbleRadius * cos;
 
             mEndX = mBCx + mBubbleRadius * sin;
-            mEndY = mBCy - mBubbleRadius * cos;
+            mEndY = mBCy - mBubbleRadius * cos;*/
+
+            PointF[] bubblePoints = Circleutils.getPoints(mBubbleRadius, mBCx, mBCy, mCtrlX, mCtrlY);
+            PointF[] dragBubbllePoints = Circleutils.getPoints(mDragBubbleRadius, mDBCx, mDBCy, mCtrlX, mCtrlY);
+            PointF A = bubblePoints[0];
+            PointF B = bubblePoints[1];
+            PointF C = dragBubbllePoints[0];
+            PointF D = dragBubbllePoints[1];
+            if (A.x > B.x) {
+                mStartX = A.x;
+                mStartY = A.y;
+                mEndX = B.x;
+                mEndY = B.y;
+                if (C.x > D.x) {
+                    mDEndX = C.x;
+                    mDendY = C.y;
+                    mDStartX = D.x;
+                    mDStartY = D.y;
+                } else {
+                    mDEndX = D.x;
+                    mDendY = D.y;
+                    mDStartX = C.x;
+                    mDStartY = C.y;
+                }
+            } else if (A.x < B.x) {
+                mStartX = A.x;
+                mStartY = A.y;
+                mEndX = B.x;
+                mEndY = B.y;
+                if (C.x < D.x) {
+                    mDEndX = C.x;
+                    mDendY = C.y;
+                    mDStartX = D.x;
+                    mDStartY = D.y;
+                } else {
+                    mDEndX = D.x;
+                    mDendY = D.y;
+                    mDStartX = C.x;
+                    mDStartY = C.y;
+                }
+            } else if (A.x == B.x) {
+                if (A.y > B.y) {
+                    mStartX = A.x;
+                    mStartY = A.y;
+                    mEndX = B.x;
+                    mEndY = B.y;
+                    if (C.y > D.y) {
+                        mDEndX = C.x;
+                        mDendY = C.y;
+                        mDStartX = D.x;
+                        mDStartY = D.y;
+                    } else {
+                        mDEndX = D.x;
+                        mDendY = D.y;
+                        mDStartX = C.x;
+                        mDStartY = C.y;
+                    }
+                } else {
+                    mStartX = B.x;
+                    mStartY = B.y;
+                    mEndX = A.x;
+                    mEndY = A.y;
+                    if (C.y > D.y) {
+                        mDEndX = D.x;
+                        mDendY = D.y;
+                        mDStartX = C.x;
+                        mDStartY = C.y;
+                    } else {
+                        mDEndX = C.x;
+                        mDendY = C.y;
+                        mDStartX = D.x;
+                        mDStartY = D.y;
+                    }
+                }
+            }
+
+            Log.e("MSL", "onDraw: " + mStartX + " ," + mStartY +"\n" + mDEndX +","+ mDendY +
+                    " \n" + mDStartX + "," + mStartY + "\n" + mEndX + "," + mEndY);
+            Log.e("MSL", "onDraw: " + A.x + " ,"+ A.y + " ,"+ B.x + " ,"+ B.y + " ,"+ C.x + " ,"+ C.y + " ,"+ D.x + " ,"+ D.y );
 
             //画贝塞尔曲线
             mBezierPath.reset();
@@ -258,7 +338,9 @@ public class MsgBubbleView extends View {
             mBezierPath.close();
             canvas.drawPath(mBezierPath, mPaint);
         }
-        if (mState != DISMISS && !TextUtils.isEmpty(mText)) {
+        if (mState != DISMISS && !TextUtils.isEmpty(mText))
+
+        {
             mTextPaint.getTextBounds(mText, 0, mText.length(), mRect);
             canvas.drawText(mText, mDBCx - mTextPaint.measureText(mText), mDBCy + mText.length() / 2, mTextPaint);
         }
@@ -326,7 +408,7 @@ public class MsgBubbleView extends View {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setBubbleResetAnimation() {
         ValueAnimator valueAnimator = ValueAnimator.ofObject(new PointFEvaluator(),
-                new PointF(mDBCx, mDBCy) ,new PointF(mBCx, mBCy));
+                new PointF(mDBCx, mDBCy), new PointF(mBCx, mBCy));
         valueAnimator.setDuration(500);
 
         valueAnimator.setInterpolator(new TimeInterpolator() {
@@ -367,6 +449,7 @@ public class MsgBubbleView extends View {
         void onReset();
 
         void onDismiss();
+
     }
 
     private BubbleStateListener mBubbleStateListener;
