@@ -23,7 +23,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.ec.vone.R;
-import com.ec.vone.view.utils.Circleutils;
+import com.ec.vone.utils.CircleUtils;
 
 import static com.ec.vone.view.MsgBubbleView.BubbleState.DEFAULT;
 import static com.ec.vone.view.MsgBubbleView.BubbleState.DISMISS;
@@ -92,7 +92,7 @@ public class MsgBubbleView extends View {
     /**
      * 拖拽中的圆的终点
      */
-    private float mDEndX, mDendY;
+    private float mDEndX, mDEndY;
     /**
      * 控制点的x y坐标
      */
@@ -243,7 +243,7 @@ public class MsgBubbleView extends View {
             mStartY = mBCy + mBubbleRadius * cos;
 
             mDEndX = mDBCx - mDragBubbleRadius * sin;
-            mDendY = mDBCy + mDragBubbleRadius * cos;
+            mDEndY = mDBCy + mDragBubbleRadius * cos;
 
             mDStartX = mDBCx + mDragBubbleRadius * sin;
             mDStartY = mDBCy - mDragBubbleRadius * cos;
@@ -251,8 +251,9 @@ public class MsgBubbleView extends View {
             mEndX = mBCx + mBubbleRadius * sin;
             mEndY = mBCy - mBubbleRadius * cos;*/
 
-            PointF[] bubblePoints = Circleutils.getPoints(mBubbleRadius, mBCx, mBCy, mCtrlX, mCtrlY);
-            PointF[] dragBubbllePoints = Circleutils.getPoints(mDragBubbleRadius, mDBCx, mDBCy, mCtrlX, mCtrlY);
+
+            PointF[] bubblePoints = CircleUtils.getPointTangency(mBubbleRadius, mBCx, mBCy, mCtrlX, mCtrlY);
+            PointF[] dragBubbllePoints = CircleUtils.getPointTangency(mDragBubbleRadius, mDBCx, mDBCy, mCtrlX, mCtrlY);
             PointF A = bubblePoints[0];
             PointF B = bubblePoints[1];
             PointF C = dragBubbllePoints[0];
@@ -264,12 +265,12 @@ public class MsgBubbleView extends View {
                 mEndY = B.y;
                 if (C.x > D.x) {
                     mDEndX = C.x;
-                    mDendY = C.y;
+                    mDEndY = C.y;
                     mDStartX = D.x;
                     mDStartY = D.y;
                 } else {
                     mDEndX = D.x;
-                    mDendY = D.y;
+                    mDEndY = D.y;
                     mDStartX = C.x;
                     mDStartY = C.y;
                 }
@@ -280,12 +281,12 @@ public class MsgBubbleView extends View {
                 mEndY = B.y;
                 if (C.x < D.x) {
                     mDEndX = C.x;
-                    mDendY = C.y;
+                    mDEndY = C.y;
                     mDStartX = D.x;
                     mDStartY = D.y;
                 } else {
                     mDEndX = D.x;
-                    mDendY = D.y;
+                    mDEndY = D.y;
                     mDStartX = C.x;
                     mDStartY = C.y;
                 }
@@ -297,12 +298,12 @@ public class MsgBubbleView extends View {
                     mEndY = B.y;
                     if (C.y > D.y) {
                         mDEndX = C.x;
-                        mDendY = C.y;
+                        mDEndY = C.y;
                         mDStartX = D.x;
                         mDStartY = D.y;
                     } else {
                         mDEndX = D.x;
-                        mDendY = D.y;
+                        mDEndY = D.y;
                         mDStartX = C.x;
                         mDStartY = C.y;
                     }
@@ -313,26 +314,27 @@ public class MsgBubbleView extends View {
                     mEndY = A.y;
                     if (C.y > D.y) {
                         mDEndX = D.x;
-                        mDendY = D.y;
+                        mDEndY = D.y;
                         mDStartX = C.x;
                         mDStartY = C.y;
                     } else {
                         mDEndX = C.x;
-                        mDendY = C.y;
+                        mDEndY = C.y;
                         mDStartX = D.x;
                         mDStartY = D.y;
                     }
                 }
             }
 
-            Log.e("MSL", "onDraw: " + mStartX + " ," + mStartY +"\n" + mDEndX +","+ mDendY +
+            Log.e("MSL", "onDraw: " + mStartX + " ," + mStartY +"\n" + mDEndX +","+ mDEndY +
                     " \n" + mDStartX + "," + mStartY + "\n" + mEndX + "," + mEndY);
             Log.e("MSL", "onDraw: " + A.x + " ,"+ A.y + " ,"+ B.x + " ,"+ B.y + " ,"+ C.x + " ,"+ C.y + " ,"+ D.x + " ,"+ D.y );
+
 
             //画贝塞尔曲线
             mBezierPath.reset();
             mBezierPath.moveTo(mStartX, mStartY);
-            mBezierPath.quadTo(mCtrlX, mCtrlY, mDEndX, mDendY);
+            mBezierPath.quadTo(mCtrlX, mCtrlY, mDEndX, mDEndY);
             mBezierPath.lineTo(mDStartX, mDStartY);
             mBezierPath.quadTo(mCtrlX, mCtrlY, mEndX, mEndY);
             mBezierPath.close();
@@ -354,8 +356,9 @@ public class MsgBubbleView extends View {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (mState == DISMISS) break;
-                //request 父控件不要拦截点击事件
+                //request父控件不拦截点击事件
                 getParent().requestDisallowInterceptTouchEvent(true);
+
                 defLength = (float) Math.hypot(event.getX() - mDBCx, event.getY() - mDBCy);
                 if (defLength < mDragBubbleRadius + defMaxLength / 4) {
                     mState = DRAG;
@@ -377,7 +380,7 @@ public class MsgBubbleView extends View {
                         }
                     } else {//间距大于最大拖拽距离之后
                         mState = MOVE;//开始拖动
-                        if (mBubbleStateListener == null) {
+                        if (mBubbleStateListener != null) {
                             mBubbleStateListener.onMove();
                         }
                     }
@@ -387,7 +390,7 @@ public class MsgBubbleView extends View {
             case MotionEvent.ACTION_UP:
                 getParent().requestDisallowInterceptTouchEvent(false);
 
-                //正在拖拽过程中未移动之前松手，气泡回到原来位置，并颤动一下
+                //拖拽过程中未移动之前(小气泡没有消失之前)松手，气泡回到原来位置，并颤动一下
                 if (mState == DRAG) {
                     setBubbleResetAnimation();
                 } else if (mState == MOVE) {
@@ -396,12 +399,10 @@ public class MsgBubbleView extends View {
                         setBubbleResetAnimation();
                     } else {
                         //取消气泡显示，并显示dismiss的动画
-
                     }
                 }
                 break;
         }
-
         return true;
     }
 

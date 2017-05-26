@@ -105,4 +105,10 @@
         <attr name="bubbleRadius" format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="MySeekBar">
+        <attr name="textSize" format="dimension" />
+        <attr name="textColor"  />
+        <attr name="img" format="reference" />
+    </declare-styleable>
+
 </resources>

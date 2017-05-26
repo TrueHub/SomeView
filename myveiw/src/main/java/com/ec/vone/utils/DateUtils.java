@@ -1,4 +1,4 @@
-package com.ec.vone.view.utils;
+package com.ec.vone.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

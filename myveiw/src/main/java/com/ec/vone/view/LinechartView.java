@@ -11,7 +11,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.ec.vone.R;
-import com.ec.vone.view.utils.DateUtils;
+import com.ec.vone.utils.DateUtils;
 
 /**
  * Created by user on 2017/5/3.
