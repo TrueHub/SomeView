@@ -224,6 +224,7 @@ public class MsgBubbleView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        canvas.drawColor(Color.BLACK);
         //画拖拽中的气泡
         if (mState != DISMISS) {
             canvas.drawCircle(mDBCx, mDBCy, mDragBubbleRadius, mPaint);
@@ -252,18 +253,34 @@ public class MsgBubbleView extends View {
             mEndY = mBCy - mBubbleRadius * cos;*/
 
 
-            PointF[] bubblePoints = CircleUtils.getPointTangency(mBubbleRadius, mBCx, mBCy, mCtrlX, mCtrlY);
-            PointF[] dragBubbllePoints = CircleUtils.getPointTangency(mDragBubbleRadius, mDBCx, mDBCy, mCtrlX, mCtrlY);
-            PointF A = bubblePoints[0];
-            PointF B = bubblePoints[1];
-            PointF C = dragBubbllePoints[0];
-            PointF D = dragBubbllePoints[1];
-            if (A.x > B.x) {
-                mStartX = A.x;
-                mStartY = A.y;
-                mEndX = B.x;
-                mEndY = B.y;
-                if (C.x > D.x) {
+            float[] bubblePoints = CircleUtils.getPointTangency(mBubbleRadius, mBCx, mBCy, mCtrlX, mCtrlY);
+            float[] dragBubbllePoints = CircleUtils.getPointTangency(mDragBubbleRadius, mDBCx, mDBCy, mCtrlX, mCtrlY);
+            PointF A = new PointF( bubblePoints[0],bubblePoints[1]);
+            PointF D = new PointF(bubblePoints[2],bubblePoints[3]);
+            PointF B =new PointF(dragBubbllePoints[0],bubblePoints[1]);
+            PointF C = new PointF(dragBubbllePoints[2],bubblePoints[3]);
+
+            Paint a = new Paint(Paint.ANTI_ALIAS_FLAG);
+            a.setColor(Color.BLUE);
+            Paint b = new Paint(Paint.ANTI_ALIAS_FLAG);
+            b.setColor(Color.YELLOW);
+            Paint c = new Paint(Paint.ANTI_ALIAS_FLAG);
+            c.setColor(Color.BLUE);
+            Paint d = new Paint(Paint.ANTI_ALIAS_FLAG);
+            d.setColor(Color.YELLOW);
+
+            canvas.drawCircle(A.x,A.y,6,a);
+            canvas.drawCircle(B.x,B.y,6,b);
+            canvas.drawCircle(C.x,C.y,6,c);
+            canvas.drawCircle(D.x,D.y,6,d);
+
+            /*if (mBCx> mDBCx) {// 往左拖动
+
+                if (mDBCy > mDBCy) {//左上角拖动
+                    mStartX = A.x;
+                    mStartY = A.y;
+                    mEndX = B.x;
+                    mEndY = B.y;
                     mDEndX = C.x;
                     mDEndY = C.y;
                     mDStartX = D.x;
@@ -328,7 +345,6 @@ public class MsgBubbleView extends View {
 
             Log.e("MSL", "onDraw: " + mStartX + " ," + mStartY +"\n" + mDEndX +","+ mDEndY +
                     " \n" + mDStartX + "," + mStartY + "\n" + mEndX + "," + mEndY);
-            Log.e("MSL", "onDraw: " + A.x + " ,"+ A.y + " ,"+ B.x + " ,"+ B.y + " ,"+ C.x + " ,"+ C.y + " ,"+ D.x + " ,"+ D.y );
 
 
             //画贝塞尔曲线
@@ -338,7 +354,7 @@ public class MsgBubbleView extends View {
             mBezierPath.lineTo(mDStartX, mDStartY);
             mBezierPath.quadTo(mCtrlX, mCtrlY, mEndX, mEndY);
             mBezierPath.close();
-            canvas.drawPath(mBezierPath, mPaint);
+            canvas.drawPath(mBezierPath, mPaint);*/
         }
         if (mState != DISMISS && !TextUtils.isEmpty(mText))
 

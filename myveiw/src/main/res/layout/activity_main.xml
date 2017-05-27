@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         app:textColor="#fff"
         app:color="#f00"
-        app:bubbleRadius="10dp"
+        app:bubbleRadius="50dp"
         app:centerText=" "
         />
 
