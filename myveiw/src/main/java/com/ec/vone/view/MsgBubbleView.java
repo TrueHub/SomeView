@@ -17,7 +17,6 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,7 +30,8 @@ import static com.ec.vone.view.MsgBubbleView.BubbleState.DRAG;
 import static com.ec.vone.view.MsgBubbleView.BubbleState.MOVE;
 
 /**
- * Created by user on 2017/5/23.
+ * Created by user on 2017/5/25.
+ *
  */
 
 public class MsgBubbleView extends View {
@@ -224,7 +224,6 @@ public class MsgBubbleView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawColor(Color.BLACK);
         //画拖拽中的气泡
         if (mState != DISMISS) {
             canvas.drawCircle(mDBCx, mDBCy, mDragBubbleRadius, mPaint);
@@ -234,118 +233,63 @@ public class MsgBubbleView extends View {
             canvas.drawCircle(mBCx, mBCy, mBubbleRadius, mPaint);
 
             //计算bezier曲线的控制点坐标
+
+            /*
+            //控制点在两圆心中点，起点终点位于圆上固定位置————圆上与两圆心连线垂直的过圆心的直线两端
             mCtrlX = (mBCx + mDBCx) / 2;
             mCtrlY = (mBCy + mDBCy) / 2;
 
-            /*float sin = (mDBCy - mBCy) / defLength;
-            float cos = (mDBCx - mBCx) / defLength;
+            float tx = (mDBCy - mBCy) / defLength;
+            float ty = (mDBCx - mBCx) / defLength;
 
-            mStartX = mBCx - mBubbleRadius * sin;
-            mStartY = mBCy + mBubbleRadius * cos;
+            mStartX = mBCx - mBubbleRadius * tx;
+            mStartY = mBCy + mBubbleRadius * ty;
 
-            mDEndX = mDBCx - mDragBubbleRadius * sin;
-            mDEndY = mDBCy + mDragBubbleRadius * cos;
+            mDEndX = mDBCx - mDragBubbleRadius * tx;
+            mDEndY = mDBCy + mDragBubbleRadius * ty;
 
-            mDStartX = mDBCx + mDragBubbleRadius * sin;
-            mDStartY = mDBCy - mDragBubbleRadius * cos;
+            mDStartX = mDBCx + mDragBubbleRadius * tx;
+            mDStartY = mDBCy - mDragBubbleRadius * ty;
 
-            mEndX = mBCx + mBubbleRadius * sin;
-            mEndY = mBCy - mBubbleRadius * cos;*/
+            mEndX = mBCx + mBubbleRadius * tx;
+            mEndY = mBCy - mBubbleRadius * ty;*/
 
+            //控制点
+            PointF ctrl = CircleUtils.getCtrlPoint(mBubbleRadius,mBCx,mBCy,mDragBubbleRadius,mDBCx,mDBCy);
+            mCtrlX = ctrl.x;
+            mCtrlY = ctrl.y;
 
             float[] bubblePoints = CircleUtils.getPointTangency(mBubbleRadius, mBCx, mBCy, mCtrlX, mCtrlY);
             float[] dragBubbllePoints = CircleUtils.getPointTangency(mDragBubbleRadius, mDBCx, mDBCy, mCtrlX, mCtrlY);
-            PointF A = new PointF( bubblePoints[0],bubblePoints[1]);
-            PointF D = new PointF(bubblePoints[2],bubblePoints[3]);
-            PointF B =new PointF(dragBubbllePoints[0],bubblePoints[1]);
-            PointF C = new PointF(dragBubbllePoints[2],bubblePoints[3]);
 
-            Paint a = new Paint(Paint.ANTI_ALIAS_FLAG);
-            a.setColor(Color.BLUE);
-            Paint b = new Paint(Paint.ANTI_ALIAS_FLAG);
-            b.setColor(Color.YELLOW);
-            Paint c = new Paint(Paint.ANTI_ALIAS_FLAG);
-            c.setColor(Color.BLUE);
-            Paint d = new Paint(Paint.ANTI_ALIAS_FLAG);
-            d.setColor(Color.YELLOW);
+            if ((mBCx < mDBCx && mBCy < mDBCy) || (mBCx > mDBCx && mBCy > mDBCy)){
+                //drag相对原位置于第一/三象限
+                mStartX = Math.min(bubblePoints[0],bubblePoints[1]);
+                mStartY = Math.max(bubblePoints[2],bubblePoints[3]);
 
-            canvas.drawCircle(A.x,A.y,6,a);
-            canvas.drawCircle(B.x,B.y,6,b);
-            canvas.drawCircle(C.x,C.y,6,c);
-            canvas.drawCircle(D.x,D.y,6,d);
+                mDEndX = Math.min(dragBubbllePoints[0],dragBubbllePoints[1]);
+                mDEndY = Math.max(dragBubbllePoints[2],dragBubbllePoints[3]);
 
-            /*if (mBCx> mDBCx) {// 往左拖动
+                mDStartX = Math.max(dragBubbllePoints[0],dragBubbllePoints[1]);
+                mDStartY = Math.min(dragBubbllePoints[2],dragBubbllePoints[3]);
 
-                if (mDBCy > mDBCy) {//左上角拖动
-                    mStartX = A.x;
-                    mStartY = A.y;
-                    mEndX = B.x;
-                    mEndY = B.y;
-                    mDEndX = C.x;
-                    mDEndY = C.y;
-                    mDStartX = D.x;
-                    mDStartY = D.y;
-                } else {
-                    mDEndX = D.x;
-                    mDEndY = D.y;
-                    mDStartX = C.x;
-                    mDStartY = C.y;
-                }
-            } else if (A.x < B.x) {
-                mStartX = A.x;
-                mStartY = A.y;
-                mEndX = B.x;
-                mEndY = B.y;
-                if (C.x < D.x) {
-                    mDEndX = C.x;
-                    mDEndY = C.y;
-                    mDStartX = D.x;
-                    mDStartY = D.y;
-                } else {
-                    mDEndX = D.x;
-                    mDEndY = D.y;
-                    mDStartX = C.x;
-                    mDStartY = C.y;
-                }
-            } else if (A.x == B.x) {
-                if (A.y > B.y) {
-                    mStartX = A.x;
-                    mStartY = A.y;
-                    mEndX = B.x;
-                    mEndY = B.y;
-                    if (C.y > D.y) {
-                        mDEndX = C.x;
-                        mDEndY = C.y;
-                        mDStartX = D.x;
-                        mDStartY = D.y;
-                    } else {
-                        mDEndX = D.x;
-                        mDEndY = D.y;
-                        mDStartX = C.x;
-                        mDStartY = C.y;
-                    }
-                } else {
-                    mStartX = B.x;
-                    mStartY = B.y;
-                    mEndX = A.x;
-                    mEndY = A.y;
-                    if (C.y > D.y) {
-                        mDEndX = D.x;
-                        mDEndY = D.y;
-                        mDStartX = C.x;
-                        mDStartY = C.y;
-                    } else {
-                        mDEndX = C.x;
-                        mDEndY = C.y;
-                        mDStartX = D.x;
-                        mDStartY = D.y;
-                    }
-                }
+                mEndX = Math.max(bubblePoints[0],bubblePoints[1]);
+                mEndY = Math.min(bubblePoints[2],bubblePoints[3]);
+
+            }else if ((mBCx > mDBCx && mBCy < mDBCy) || (mBCx < mDBCx && mBCy > mDBCy)){
+                //drag相对原位置于第二/四象限
+                mStartX = Math.min(bubblePoints[0],bubblePoints[1]);
+                mStartY = Math.min(bubblePoints[2],bubblePoints[3]);
+
+                mDEndX = Math.min(dragBubbllePoints[0],dragBubbllePoints[1]);
+                mDEndY = Math.min(dragBubbllePoints[2],dragBubbllePoints[3]);
+
+                mDStartX = Math.max(dragBubbllePoints[0],dragBubbllePoints[1]);
+                mDStartY = Math.max(dragBubbllePoints[2],dragBubbllePoints[3]);
+
+                mEndX = Math.max(bubblePoints[0],bubblePoints[1]);
+                mEndY = Math.max(bubblePoints[2],bubblePoints[3]);
             }
-
-            Log.e("MSL", "onDraw: " + mStartX + " ," + mStartY +"\n" + mDEndX +","+ mDEndY +
-                    " \n" + mDStartX + "," + mStartY + "\n" + mEndX + "," + mEndY);
-
 
             //画贝塞尔曲线
             mBezierPath.reset();
@@ -354,7 +298,7 @@ public class MsgBubbleView extends View {
             mBezierPath.lineTo(mDStartX, mDStartY);
             mBezierPath.quadTo(mCtrlX, mCtrlY, mEndX, mEndY);
             mBezierPath.close();
-            canvas.drawPath(mBezierPath, mPaint);*/
+            canvas.drawPath(mBezierPath, mPaint);
         }
         if (mState != DISMISS && !TextUtils.isEmpty(mText))
 

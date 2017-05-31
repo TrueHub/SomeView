@@ -1,22 +1,39 @@
 package com.ec.vone.utils;
 
 import android.graphics.PointF;
-import android.util.Log;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import static android.R.attr.x;
-import static android.R.attr.y;
-import static android.R.id.list;
-
 /**
- * Created by vone on 2017/5/23.
+ * Created by vone on 2017/5/25.
  */
 
 public class CircleUtils {
+
+    /**
+     * 求两圆之间最短线段的中点
+     * @param r_1st 第一个圆的半径
+     * @param x_1st 第一个圆的x
+     * @param y_1st 第一个圆的y
+     * @param r_2nd 第二个圆半径
+     * @param x_2nd 第二个圆的x
+     * @param y_2nd 第二个圆的y
+     * @return 中点坐标
+     */
+    public static PointF getCtrlPoint(float r_1st , float x_1st , float y_1st, float r_2nd , float x_2nd , float y_2nd){
+        PointF pointF = new PointF();
+
+        float l = (float) ((Math.sqrt( Math.pow(x_1st - x_2nd , 2) + Math.pow(y_1st - y_2nd ,2) ) - r_2nd - r_1st) /2);
+        float w = (l + r_1st) / (l + r_2nd);//比例
+        //由以下公式直接拿到中点坐标：
+        /*在直角坐标系内,已知两点P1(x1,y1),P2(x2,y2);在两点连线上有一点P,
+        设它的坐标为(x,y),且线段P1P比线段PP2的比值为 λ ，那么可以求出P的坐标为
+        x=(x1 + λ · x2) / (1 + λ)
+        y=(y1 + λ · y2) / (1 + λ)*/
+
+        pointF.x = (x_1st + w * x_2nd) / (1 + w);
+        pointF.y = (y_1st + w * y_2nd) / (1 + w);
+
+        return pointF;
+    }
+
     /**
      * 已知半径的圆的圆心和圆外一点坐标，求该点到圆的两个切点
      *
@@ -37,15 +54,7 @@ public class CircleUtils {
         float b_pow_2 = (float) Math.pow(b, 2);
         float b_pow_3 = (float) Math.pow(b, 3);
 
-        float a_2_BigD = mul(a,a);
-        float b_2_BigD = mul(b,b);
-        float m_2_BigD = mul(m,m);
-        float n_2_BigD = mul(n,n);
-        float r_2_BigD = mul(r,r);
-        float n_b_BigD = mul(b,n);
-        float m_a_BigD = mul(m,a);
 
-//        float sq = (float) java.lang.Math.sqrt(a_2_BigD - 2 * m_a_BigD + b_2_BigD - 2 * n_b_BigD + m_2_BigD + n_2_BigD - r_2_BigD);
         float sq = (float) java.lang.Math.sqrt(a_pow_2 - 2 * m * a + b_pow_2 - 2 * n * b + m_pow_2 + n_pow_2 - r_pow_2);
 
         float x1 = -(-a_pow_2 + m * a - b_pow_2 + n * b + r_pow_2) / (a - m)
@@ -70,12 +79,12 @@ public class CircleUtils {
                 (a_pow_2 - 2 * a * m + b_pow_2 - 2 * b * n + m_pow_2 + n_pow_2);
 
 
-        Log.d("MSL", "getPointTangency: " + x1 + "," + y1 + "\n" + x2 + "," + y2);
-        Log.d("MSL", "getPointTangency: " + sq + ", " + a_pow_2 + "," + b_pow_2 + "," + m_pow_2 + "," + n_pow_2 + ",," + b_pow_3);
+//        Log.d("MSL", "getPointTangency: " + x1 + "," + y1 + "\n" + x2 + "," + y2);
+//        Log.d("MSL", "getPointTangency: " + sq + ", " + a_pow_2 + "," + b_pow_2 + "," + m_pow_2 + "," + n_pow_2 + ",," + b_pow_3);
 
         points[0] = x1;
-        points[1] = y1;
-        points[2] = x2;
+        points[2] = y1;
+        points[1] = x2;
         points[3] = y2;
 
         return points;
@@ -83,46 +92,9 @@ public class CircleUtils {
 
     public static void main(String[] a) {
 
-        float[] pointFs = getPointTangency(2, 0, 0, 3, 2);
+        float[] pointFs = getPointTangency(2, 0, 0, -3, -2);
 
-        System.out.println(pointFs[0] + "," + pointFs[1] + "\n" + pointFs[2] + "," + pointFs[3]);
-
-    }
-
-    public static double add(double d1, double d2) {
-        BigDecimal b1 = new BigDecimal(Double.toString(d1));
-        BigDecimal b2 = new BigDecimal(Double.toString(d2));
-        return b1.add(b2).doubleValue();
-
-    }
-
-    public static double sub(double d1, double d2) {
-        BigDecimal b1 = new BigDecimal(Double.toString(d1));
-        BigDecimal b2 = new BigDecimal(Double.toString(d2));
-        return b1.subtract(b2).doubleValue();
-
-    }
-
-    public static float mul(float d1, float d2) {
-        BigDecimal b1 = new BigDecimal(Float.toString(d1));
-        BigDecimal b2 = new BigDecimal(Float.toString(d2));
-        return b1.multiply(b2).floatValue();
-
-    }
-
-    public static double div(double d1, double d2) {
-
-        return div(d1, d2, 3);
-
-    }
-
-    public static double div(double d1, double d2, int scale) {
-        if (scale < 0) {
-            throw new IllegalArgumentException("The scale must be a positive integer or zero");
-        }
-        BigDecimal b1 = new BigDecimal(Double.toString(d1));
-        BigDecimal b2 = new BigDecimal(Double.toString(d2));
-        return b1.divide(b2, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
+        System.out.println(pointFs[0] + "," + pointFs[2] + "\n" + pointFs[1] + "," + pointFs[3]);
 
     }
 
