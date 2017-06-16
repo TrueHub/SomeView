@@ -107,8 +107,16 @@
 
     <declare-styleable name="MySeekBar">
         <attr name="textSize" format="dimension" />
-        <attr name="textColor"  />
+        <attr name="textColor" />
         <attr name="img" format="reference" />
+    </declare-styleable>
+    
+    <declare-styleable name="WaveCircleView">
+        <attr name="color"/>
+        <attr name="image"/>
+        <attr name="stroke" format="boolean"/>
+        <attr name="waveCreateSpeed" format="integer"/>
+        <attr name="duration" format="integer"/>
     </declare-styleable>
 
 </resources>

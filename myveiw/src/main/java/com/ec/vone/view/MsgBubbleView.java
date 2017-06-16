@@ -35,102 +35,55 @@ import static com.ec.vone.view.MsgBubbleView.BubbleState.MOVE;
  */
 
 public class MsgBubbleView extends View {
-    private Paint mTextPaint;
-    private Path mBezierPath;
-    /**
-     * 气泡颜色
-     */
+    /** 气泡颜色*/
     private int mColor;
-    /**
-     * 中心文字颜色
-     */
+    /** 中心文字颜色 */
     private int mTextColor;
-    /**
-     * 中心文字内容
-     */
+    /** 中心文字内容 */
     private String mText;
 
-    /**
-     * 原始气泡大小
-     */
+    /** 原始气泡大小 */
     private float mBubbleRadius;
-    /**
-     * 拖拽时跟随手指的气泡大小
-     */
+    /** 拖拽时跟随手指的气泡大小 */
     private float mDragBubbleRadius;
 
-    /**
-     * 原始气泡的x、y坐标
-     */
+    /** 原始气泡的x、y坐标 */
     private float mBCx, mBCy;
-    /**
-     * 拖拽气泡的x、y坐标
-     */
+    /** 拖拽气泡的x、y坐标 */
     private float mDBCx, mDBCy;
-    /**
-     * 两圆圆心的距离
-     */
+    /** 两圆圆心的距离 */
     private float defLength;
-    /**
-     * 两圆圆心距离阀值，超过此值原始气泡消失
-     */
+    /** 两圆圆心距离阀值，超过此值原始气泡消失 */
     private float defMaxLength;
 
     /*以下是贝塞尔曲线的相关点*/
-    /**
-     * 原始气泡圆的起点x y
-     */
+    /** 原始气泡圆的起点x y */
     private float mStartX, mStartY;
-    /**
-     * 原始气泡圆的终点 x y
-     */
+    /** 原始气泡圆的终点 x y */
     private float mEndX, mEndY;
-    /**
-     * 拖拽中的圆的起点 x y
-     */
+    /** 拖拽中的圆的起点 x y */
     private float mDStartX, mDStartY;
-    /**
-     * 拖拽中的圆的终点
-     */
+    /** 拖拽中的圆的终点 */
     private float mDEndX, mDEndY;
-    /**
-     * 控制点的x y坐标
-     */
+    /** 控制点的x y坐标 */
     private float mCtrlX, mCtrlY;
 
-    /**
-     * 文字的尺寸
-     */
+    /** 文字的尺寸 */
     private Rect mRect;
 
-    /**
-     * 气泡的状态
-     */
+    /** 气泡的状态enum类 */
     enum BubbleState {
-        /**
-         * 默认，无法拖拽
-         */
-        DEFAULT,
-
-        /**
-         * 拖拽
-         */
-        DRAG,
-
-        /**
-         * 移动
-         */
-        MOVE,
-
-        /**
-         * 消失
-         */
-        DISMISS;
+        /** 默认，无法拖拽 */  DEFAULT,
+        /** 拖拽 */           DRAG,
+        /** 移动 */           MOVE,
+        /** 消失 */           DISMISS
     }
-
+    /** 气泡的状态 */
     private BubbleState mState;
 
     private Paint mPaint;
+    private Paint mTextPaint;//文字画笔
+    private Path mBezierPath;//曲线的画笔
 
     public MsgBubbleView(Context context) {
         this(context, null);
@@ -143,7 +96,8 @@ public class MsgBubbleView extends View {
 
     public MsgBubbleView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs, R.styleable.MsgBubbleView, 0, defStyleAttr);
+        TypedArray typedArray = context.getTheme().obtainStyledAttributes(
+                attrs, R.styleable.MsgBubbleView, 0, defStyleAttr);
 
         for (int i = 0; i < typedArray.length(); i++) {
             int attr = typedArray.getIndex(i);
@@ -159,7 +113,8 @@ public class MsgBubbleView extends View {
                     mColor = typedArray.getColor(attr, Color.RED);
                     break;
                 case R.styleable.MsgBubbleView_bubbleRadius:
-                    mBubbleRadius = typedArray.getDimensionPixelSize(attr, (int) TypedValue.applyDimension(
+                    mBubbleRadius = typedArray.getDimensionPixelSize(attr,
+                            (int) TypedValue.applyDimension(
                             TypedValue.COMPLEX_UNIT_DIP, 20, getResources().getDisplayMetrics()));
                     break;
             }

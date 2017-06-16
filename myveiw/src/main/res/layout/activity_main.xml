@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.ec.vone.MainActivity">
 
-    <com.ec.vone.view.MsgBubbleView
+    <com.ec.vone.view.WaveCircleView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:textColor="#fff"
-        app:color="#f00"
-        app:bubbleRadius="50dp"
-        app:centerText=" "
+        app:color="@color/colorGreenLess"
+        app:stroke="true"
+        app:duration="3000"
+        app:waveCreateSpeed="500"
+        app:image="@mipmap/bluetooth"
         />
 
-    </LinearLayout>
+</LinearLayout>
