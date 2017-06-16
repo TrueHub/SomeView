@@ -29,9 +29,9 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/6/28 0028.
  * <p>
- * 摘自 http://www.jianshu.com/p/8c968dff843f
+ * 摘自 简书
  * <p>
- * 修改：
+ * 修改：增加xml中设置属性的接口，整体增加旋转动画。更适应自己的项目
  */
 public class WaveCircleView extends View {
     //波纹生成时的半径
