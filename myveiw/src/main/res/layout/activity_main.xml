@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:color="@color/colorGreenLess"
-        app:stroke="true"
+        app:stroke="false"
         app:duration="3000"
         app:waveCreateSpeed="500"
         app:image="@mipmap/bluetooth"
