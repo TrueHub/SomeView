@@ -119,4 +119,10 @@
         <attr name="duration" format="integer"/>
     </declare-styleable>
 
+    <declare-styleable name="LinerView">
+        <attr name="color"/>
+        <attr name="lineHeight"/>
+        <attr name="startLeft" format="boolean"/>
+    </declare-styleable>
+
 </resources>

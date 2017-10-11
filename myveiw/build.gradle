@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.utang.myapplication"
-        minSdkVersion 15
+        minSdkVersion 25
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -30,4 +30,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
+    compile 'com.necer.ndialog2:ndialog:1.0.2'
 }

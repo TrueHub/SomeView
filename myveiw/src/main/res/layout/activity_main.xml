@@ -6,16 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
     tools:context="com.ec.vone.MainActivity">
 
-    <com.ec.vone.view.WaveCircleView
+
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:color="@color/colorGreenLess"
-        app:stroke="false"
-        app:duration="3000"
-        app:waveCreateSpeed="500"
-        app:image="@mipmap/bluetooth"
+        android:id="@+id/btn"
+        android:text="BU"
         />
 
 </LinearLayout>
