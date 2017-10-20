@@ -28,11 +28,10 @@
         <item name="android:textSize">30sp</item>
         <!--message的样式-->
         <item name="android:textColorPrimary">@color/colorGreenLess</item>
-        <item name="android:textAppearanceMedium">@style/MyAppearance</item>
 
     </style>
 
-    <style name="MyAppearance" parent="@style/TextAppearance.AppCompat.Medium">
+    <style name="MyAppearance" parent="android:style/TextAppearance.Medium">
         <item name="textSize">50sp</item>
     </style>
 
