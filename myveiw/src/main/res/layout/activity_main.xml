@@ -5,13 +5,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/colorPrimary"
+    android:background="#1e1e1e"
     android:gravity="center"
-    tools:context="com.ec.vone.MainActivity">
+    android:orientation="vertical"
+    tools:context="com.ec.vone.ui.MainActivity">
 
-
-    <com.ec.vone.view.Surface3D
-        android:layout_width="300dp"
-        android:layout_height="300dp" />
+    <com.ec.vone.view.MyJboxLayout
+        android:background="@color/rrr"
+        android:id="@+id/mobikeView"
+        android:layout_gravity="center"
+        android:layout_width="350dp"
+        android:layout_height="200dp">
+    </com.ec.vone.view.MyJboxLayout>
 </LinearLayout>
